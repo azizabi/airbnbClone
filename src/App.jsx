@@ -1,15 +1,19 @@
-import React from 'react';
+// App.jsx
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './Components/Header';
 import Banner from './Components/Banner';
 import SmallCard from './Components/SmallCard';
-import MediumCard from './Components/MediumCard'; 
-import exploreData from './exploreData.json'; 
+import MediumCard from './Components/MediumCard';
+import exploreData from './exploreData.json';
 import mediumCardData from './mediumCardData.json';
 import LargeCard from './Components/LargeCard';
-import FullCard from './assets/Fullcard.png'
+import FullCard from './assets/Fullcard.png';
 import Footer from './Components/Footer';
+import Search from './Components/Search';
+import Spinner from './Components/Spinner'; // Import the Spinner component
 
-const App = () => {
+const Home = () => {
   return (
     <div>
       <Header />
@@ -43,19 +47,42 @@ const App = () => {
           </div>
         </section>
 
-            <LargeCard
-              img={FullCard}
-              title='The Greatest Outdoors'
-              description='Wishlist is curated by Airbnb'
-              buttonText='Get Inspried'
-            />
-
+        <LargeCard
+          img={FullCard}
+          title='The Greatest Outdoors'
+          description='Wishlist is curated by Airbnb'
+          buttonText='Get Inspired'
+        />
       </main>
 
-      <Footer/>
+      <Footer />
     </div>
   );
 };
 
-export default App;
+const App = () => {
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    // Simulate loading delay
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000); // Adjust this timeout as needed
+  }, []);
+
+  return (
+    <Router>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      )}
+    </Router>
+  );
+};
+
+export default App;
